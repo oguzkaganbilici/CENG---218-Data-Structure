@@ -1,0 +1,60 @@
+Economy,Toyota,Yaris,2022
+Economy,Ford,Fiesta,2023
+Economy,Toyota,Yaris,2022
+Economy,Ford,Fiesta,2023
+Economy,Toyota,Yaris,2022
+Compact,Honda,Civic,2022
+Compact,Chevrolet,Cruze,2023
+Compact,Honda,Civic,2022
+Compact,Chevrolet,Cruze,2023
+Compact,Honda,Civic,2022
+Midsize,Toyota,Camry,2023
+Midsize,Ford,Fusion,2022
+Midsize,Toyota,Camry,2023
+Midsize,Ford,Fusion,2022
+Midsize,Toyota,Camry,2023
+FullSize,Chevrolet,Impala,2023
+FullSize,Nissan,Maxima,2022
+FullSize,Chevrolet,Impala,2023
+FullSize,Nissan,Maxima,2022
+FullSize,Chevrolet,Impala,2023
+SUV,Ford,Explorer,2023
+SUV,Toyota,RAV4,2022
+SUV,Ford,Explorer,2023
+SUV,Toyota,RAV4,2022
+SUV,Ford,Explorer,2023
+Crossover,Honda,CR-V,2022
+Crossover,Nissan,Rogue,2023
+Crossover,Honda,CR-V,2022
+Crossover,Nissan,Rogue,2023
+Crossover,Honda,CR-V,2022
+Luxury,BMW,7 Series,2023
+Luxury,Mercedes-Benz,S-Class,2022
+Luxury,BMW,7 Series,2023
+Luxury,Mercedes-Benz,S-Class,2022
+Luxury,BMW,7 Series,2023
+Convertible,Mazda,MX-5,2023
+Convertible,Ford,Mustang Convertible,2022
+Convertible,Mazda,MX-5,2023
+Convertible,Ford,Mustang Convertible,2022
+Convertible,Mazda,MX-5,2023
+Van,Chrysler,Pacifica,2023
+Van,Honda,Odyssey,2022
+Van,Chrysler,Pacifica,2023
+Van,Honda,Odyssey,2022
+Van,Chrysler,Pacifica,2023
+Truck,Ford,F-150,2023
+Truck,Chevrolet,Silverado,2022
+Truck,Ford,F-150,2023
+Truck,Chevrolet,Silverado,2022
+Truck,Ford,F-150,2023
+Electric,Tesla,Model S,2022
+Electric,Tesla,Model S,2022
+Electric,Tesla,Model S,2022
+Electric,Tesla,Model S,2022
+Electric,Tesla,Model S,2022
+Hybrid,Toyota,Prius,2023
+Hybrid,Toyota,Prius,2023
+Hybrid,Toyota,Prius,2023
+Hybrid,Toyota,Prius,2023
+Hybrid,Toyota,Prius,2023

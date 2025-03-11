@@ -1,0 +1,3 @@
+C:/Users/oguz.bilici/Desktop/EliteDrive_202471205_OguzKaganBilici/cmake-build-debug/CMakeFiles/EliteDrive_202471205_OguzKaganBilici.dir
+C:/Users/oguz.bilici/Desktop/EliteDrive_202471205_OguzKaganBilici/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/oguz.bilici/Desktop/EliteDrive_202471205_OguzKaganBilici/cmake-build-debug/CMakeFiles/rebuild_cache.dir
