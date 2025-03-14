@@ -410,62 +410,80 @@ public:
         cerr << "Car could not be found or is it is already rented!" << endl;
     }
     
-    void returnCar(int customerID, int carIndex)
+    void returnCar(int customerID, int carIndex, ForwardList &carList)
     {
         CustomerNode *customerWalker = head;
-        
+
         while (customerWalker != nullptr)
         {
-            
-            if(customerWalker->customerId == customerID)
+            if (customerWalker->customerId == customerID)
             {
-                cout<<"The customer is found.! Process has been going on.."<<endl;
-                
+                cout << "The customer is found.! Process has been going on..\n";
+
                 RentalCarNode *rentedCarWalker = customerWalker->rentedCars.getHead();
                 RentalCarNode *rentedCarPrev = nullptr;
-                
-                if(rentedCarWalker == nullptr)
+                Node *carListWalker = carList.getHead();
+
+                if (rentedCarWalker == nullptr)
                 {
-                    cout<<"The customer has not any rented car";
+                    cout << "The customer has not any rented car\n";
                     return;
                 }
-                
                 else
                 {
-                    while(rentedCarWalker != nullptr)
+                    while (rentedCarWalker != nullptr)
                     {
-                        if(rentedCarWalker->carIndex == carIndex)
+                        if (rentedCarWalker->carIndex == carIndex)
                         {
-                            cout<<"The car is found.! Process has been going on.."<<endl;
-                            
-                            if(rentedCarWalker -> next == nullptr)
+                            cout << "The car is found.! Process has been going on..\n";
+
+                            while (carListWalker != nullptr)
                             {
-                                
-                                customerWalker->rentedCars.setHead(rentedCarWalker->next);
+                                if (carListWalker->carIndex == carIndex)
+                                {
+                                    carListWalker->Status = "Available";
+                                    break;
+                                }
+                                carListWalker = carListWalker->next;
                             }
-                            else if(rentedCarPrev != nullptr)
+
+                            if (rentedCarWalker->next == nullptr)
                             {
-                                
+                                if (rentedCarPrev == nullptr)
+                                {
+                                    customerWalker->rentedCars.setHead(nullptr);
+                                }
+                                else
+                                {
+                                    rentedCarPrev->next = nullptr;
+                                }
+                            }
+                            else if (rentedCarPrev != nullptr)
+                            {
                                 rentedCarPrev->next = rentedCarWalker->next;
-                                
                             }
+                            cout << "The car: " << rentedCarWalker->Brand << " is returned successfully\n";
+
                             RentalCarNode *temp = rentedCarWalker;
+                            rentedCarWalker = rentedCarWalker->next;
                             delete temp;
-                            cout << "The car: " << rentedCarWalker->Brand << " is returned successfully"<<endl;
                             return;
                         }
-                        
+
+                        rentedCarPrev = rentedCarWalker;
+                        rentedCarWalker = rentedCarWalker->next;
                     }
-                    
-                    rentedCarPrev = rentedCarWalker;
-                    rentedCarWalker = rentedCarWalker ->next;
                 }
-                cout<<"The car is NOT found.! Try again..!"<<endl;
+
+                cout << "The car is NOT found.! Try again..\n";
             }
-            customerWalker = customerWalker -> next;
+
+            customerWalker = customerWalker->next;
         }
+
+        cout << "The customer is NOT found.! Try again..\n";
     }
-    
+
     string getCurrentDate() {
         // Şu anki zaman bilgisini alıyoruz
         time_t now = time(0);
@@ -494,38 +512,40 @@ public:
         return oss.str();
     }
 
-    void const printRentedCars(int customerID) {
+    void printRentedCars(int customerID)
+    {
         CustomerNode *walker = head;
-        
-        while (walker != nullptr) {
+
+        while (walker != nullptr)
+        {
             if (walker->customerId == customerID)
             {
                 RentalCarNode *rentedCarWalker = walker->rentedCars.getHead();
-                
+
                 cout << left
-                << setw(5)  << "ID"
-                << setw(15) << "Name"
-                << setw(15) << "Surname"
-                << setw(25) << "Booking History"
-                << setw(25) << "Rented Cars" << endl;
+                     << setw(5) << "ID"
+                     << setw(15) << "Name"
+                     << setw(15) << "Surname"
+                     << setw(25) << "Booking History"
+                     << setw(25) << "Rented Cars" << endl;
                 cout << "---------------------------------------------------------------------------\n";
-                
-                
-                if (rentedCarWalker == nullptr) {
+
+                if (rentedCarWalker == nullptr)
+                {
                     cout << left
-                         << setw(5)  << walker->customerId
+                         << setw(5) << walker->customerId
                          << setw(15) << walker->customerName
                          << setw(15) << walker->customerSurname
                          << setw(25) << "No rented cars!"
                          << setw(25) << "-" << endl;
                 }
-                else {
-                    while(rentedCarWalker != nullptr)
+                else
+                {
+                    while (rentedCarWalker != nullptr)
                     {
+                        string carInfo = to_string(rentedCarWalker->carIndex) + " | " + rentedCarWalker->carType + " | " +
+                                         rentedCarWalker->Brand + " | " + rentedCarWalker->Model + " | " + to_string(rentedCarWalker->Year);
 
-                        string carInfo = to_string(rentedCarWalker->carIndex) + " | " + rentedCarWalker -> carType +  " | " + rentedCarWalker->Brand + " | " + rentedCarWalker->Model + " | " + to_string(rentedCarWalker->Year);
-                        
-                        
                         cout << left
                              << setw(5) << walker->customerId
                              << setw(15) << walker->customerName
@@ -533,20 +553,19 @@ public:
                              << setw(25) << rentedCarWalker->bookingDate
                              << setw(25) << carInfo
                              << endl;
-                        
-                        rentedCarWalker = rentedCarWalker -> next;
-                        
-                        
+
+                        rentedCarWalker = rentedCarWalker->next;
                     }
-                    cout<<endl;
-                    return;
                 }
+                cout << endl;
+                return;
             }
             walker = walker->next;
         }
-        cerr << "Customer with ID " << customerID << " not found!" << endl;
 
+        cerr << "Customer with ID " << customerID << " not found!" << endl;
     }
+
     
     bool checkCustomer(int index)
     {
@@ -562,7 +581,6 @@ public:
         return false;
     }
 };
-
 
 
 int main() {
@@ -689,7 +707,7 @@ int main() {
             cout<<"Enter car index that you want to return back: ";
             cin>>carIndex;
             cout<<endl;
-            customerList.returnCar(customerIndex,carIndex);
+            customerList.returnCar(customerIndex,carIndex, Cars);
         }
         
         if (kullaniciGiris == 4) {
