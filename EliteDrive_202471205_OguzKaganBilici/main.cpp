@@ -3,7 +3,6 @@
 #include<sstream>
 #include<vector>
 #include<iomanip> // verileri daha düzenli göstermek için
-
 #include <ctime> // tarih için
 #include <string>
 
@@ -28,6 +27,66 @@ class Node { // for car lists
         }
 };
 
+class RentalCarNode
+{
+public:
+    RentalCarNode *next;
+    
+    int carIndex;
+    string bookingDate;
+    string carType, Brand, Model, Status;
+    int Year;
+    RentalCarNode(int index, string date, string type, string brand, string model, int year, string status = "Rented" )
+    {
+        next = nullptr;
+        carIndex = index;
+        bookingDate = date;
+        
+        carType = type;
+        Brand = brand;
+        Model = model;
+        Status = status;
+        Year = year;
+    }
+};
+
+
+class RentalCarList{
+private:
+    RentalCarNode *head;
+public:
+    RentalCarList()
+    {
+        head = nullptr;
+    }
+    RentalCarNode *getHead()
+    {
+        return head;
+    }
+    
+    void setHead(RentalCarNode *carNode)
+    {
+        head = carNode;
+    }
+    
+    void add(RentalCarNode *newRentCar)
+    {
+        if(head == nullptr)
+            head = newRentCar;
+        else
+        {
+            RentalCarNode *tempNode = head;
+            while(tempNode->next != nullptr)
+            {
+                tempNode = tempNode->next;
+            }
+            tempNode->next = newRentCar;
+        }
+    }
+};
+
+
+
 class CustomerNode { // for customers
 public:
     CustomerNode* next;
@@ -35,8 +94,8 @@ public:
     string customerName, customerSurname, customerPhoneNumber, customerAddress ;
     int customerAge, customerId;
 
-    vector<Node*> rentedCars;
-    vector<string> customerBookingHistory;
+    RentalCarList rentedCars;
+
 
     CustomerNode(int ID, string name,string surname,string phoneNumber,string address, int age)
     {
@@ -49,6 +108,8 @@ public:
         customerAge = age;
     }
 };
+
+
 
 class ForwardList{
 private:
@@ -321,12 +382,8 @@ public:
                 walker = walker->next;
             }
             if (walker == nullptr) {
-                cout<<"Customer could not found!"<<endl;
+                cout << "Customer with ID " << ID << " not found!" << endl;
                 return;
-            }
-
-            if (walker == nullptr) {
-                cout<<"Customer could not found!"<<endl;
             }
         
         Node *carWalker = carList.getHead();
@@ -335,17 +392,78 @@ public:
 
             if (carWalker->carIndex == carIndex && carWalker->Status == "Avaible") {
                 carWalker -> Status = "Rented";
-
-                walker->rentedCars.push_back(carWalker);
                 
-                string today = getCurrentDate();
-                walker->customerBookingHistory.push_back(today);
-                cout<<"The car is rented!"<<endl;
+                string todayDate = getCurrentDate();
+                
+                
+                //int index, string date, string type, string brand, string model, int year, string status = "Rented"
+                RentalCarNode *newRentCar = new RentalCarNode(carWalker->carIndex, todayDate, carWalker->carType, carWalker->Brand, carWalker->Model, carWalker->Year);
+                
+                
+                walker->rentedCars.add(newRentCar);
+
+                cout << "Car rented successfully by customer: " << walker->customerName << endl;
                 return;
             }
             carWalker = carWalker->next;
         }
         cerr << "Car could not be found or is it is already rented!" << endl;
+    }
+    
+    void returnCar(int customerID, int carIndex)
+    {
+        CustomerNode *customerWalker = head;
+        
+        while (customerWalker != nullptr)
+        {
+            
+            if(customerWalker->customerId == customerID)
+            {
+                cout<<"The customer is found.! Process has been going on.."<<endl;
+                
+                RentalCarNode *rentedCarWalker = customerWalker->rentedCars.getHead();
+                RentalCarNode *rentedCarPrev = nullptr;
+                
+                if(rentedCarWalker == nullptr)
+                {
+                    cout<<"The customer has not any rented car";
+                    return;
+                }
+                
+                else
+                {
+                    while(rentedCarWalker != nullptr)
+                    {
+                        if(rentedCarWalker->carIndex == carIndex)
+                        {
+                            cout<<"The car is found.! Process has been going on.."<<endl;
+                            
+                            if(rentedCarWalker -> next == nullptr)
+                            {
+                                
+                                customerWalker->rentedCars.setHead(rentedCarWalker->next);
+                            }
+                            else if(rentedCarPrev != nullptr)
+                            {
+                                
+                                rentedCarPrev->next = rentedCarWalker->next;
+                                
+                            }
+                            RentalCarNode *temp = rentedCarWalker;
+                            delete temp;
+                            cout << "The car: " << rentedCarWalker->Brand << " is returned successfully"<<endl;
+                            return;
+                        }
+                        
+                    }
+                    
+                    rentedCarPrev = rentedCarWalker;
+                    rentedCarWalker = rentedCarWalker ->next;
+                }
+                cout<<"The car is NOT found.! Try again..!"<<endl;
+            }
+            customerWalker = customerWalker -> next;
+        }
     }
     
     string getCurrentDate() {
@@ -378,9 +496,12 @@ public:
 
     void const printRentedCars(int customerID) {
         CustomerNode *walker = head;
-
+        
         while (walker != nullptr) {
-            if (walker->customerId == customerID) {
+            if (walker->customerId == customerID)
+            {
+                RentalCarNode *rentedCarWalker = walker->rentedCars.getHead();
+                
                 cout << left
                 << setw(5)  << "ID"
                 << setw(15) << "Name"
@@ -389,32 +510,42 @@ public:
                 << setw(25) << "Rented Cars" << endl;
                 cout << "---------------------------------------------------------------------------\n";
                 
-                if (walker->rentedCars.empty()) {
+                
+                if (rentedCarWalker == nullptr) {
                     cout << left
-                    << setw(5)  << walker->customerId
-                    << setw(15) << walker->customerName
-                    << setw(15) << walker->customerSurname
-                    << setw(25) << "No rented cars!"
-                    << setw(25) << "-" << endl;
+                         << setw(5)  << walker->customerId
+                         << setw(15) << walker->customerName
+                         << setw(15) << walker->customerSurname
+                         << setw(25) << "No rented cars!"
+                         << setw(25) << "-" << endl;
                 }
                 else {
-                    for (int i=0;i<walker->rentedCars.size();i++) {
-                        Node *cars = walker->rentedCars[i];
-                        string carInfo = to_string(cars->carIndex) + " | " + cars->carType + " | " + cars->Brand + " | " + cars->Model +   " | " + to_string(cars->Year);
+                    while(rentedCarWalker != nullptr)
+                    {
+
+                        string carInfo = to_string(rentedCarWalker->carIndex) + " | " + rentedCarWalker -> carType +  " | " + rentedCarWalker->Brand + " | " + rentedCarWalker->Model + " | " + to_string(rentedCarWalker->Year);
+                        
                         
                         cout << left
-                        << setw(5)  << walker->customerId
-                        << setw(15) << walker->customerName
-                        << setw(15) << walker->customerSurname
-                        << setw(25) << walker->customerBookingHistory[i]
-                        << setw(25) << carInfo
-                        << endl;
+                             << setw(5) << walker->customerId
+                             << setw(15) << walker->customerName
+                             << setw(15) << walker->customerSurname
+                             << setw(25) << rentedCarWalker->bookingDate
+                             << setw(25) << carInfo
+                             << endl;
+                        
+                        rentedCarWalker = rentedCarWalker -> next;
+                        
+                        
                     }
                     cout<<endl;
+                    return;
                 }
             }
             walker = walker->next;
         }
+        cerr << "Customer with ID " << customerID << " not found!" << endl;
+
     }
     
     bool checkCustomer(int index)
@@ -438,7 +569,8 @@ int main() {
 
     ForwardList Cars;
     CustomerLists customerList;
-
+    RentalCarList rentedCarsLists;
+    
     Cars.uploadTxt("cars.txt");
     
     
@@ -549,10 +681,15 @@ int main() {
         }
 
         if (kullaniciGiris == 3) {
-            int carIndex;
-            cout<<"Enter customer car index: ";
-            cin>> carIndex;
-            Cars.searchCar(carIndex);
+            int carIndex, customerIndex;
+            cout<<"Enter customer ID: ";
+            cin>>customerIndex;
+            cout<<endl;
+            customerList.printRentedCars(customerIndex);
+            cout<<"Enter car index that you want to return back: ";
+            cin>>carIndex;
+            cout<<endl;
+            customerList.returnCar(customerIndex,carIndex);
         }
         
         if (kullaniciGiris == 4) {
