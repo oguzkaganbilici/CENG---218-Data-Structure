@@ -1,8 +1,12 @@
-#include <iostream>
+#include<iostream>
 #include<fstream>
 #include<sstream>
 #include<vector>
 #include<iomanip> // verileri daha düzenli göstermek için
+
+#include <ctime> // tarih için
+#include <string>
+
 
 using namespace std;
 
@@ -28,10 +32,11 @@ class CustomerNode { // for customers
 public:
     CustomerNode* next;
 
-    string customerName, customerSurname, customerPhoneNumber, customerAddress;
+    string customerName, customerSurname, customerPhoneNumber, customerAddress ;
     int customerAge, customerId;
 
     vector<Node*> rentedCars;
+    vector<string> customerBookingHistory;
 
     CustomerNode(int ID, string name,string surname,string phoneNumber,string address, int age)
     {
@@ -152,6 +157,95 @@ public:
             walker = walker->next;
         }
     }
+    
+    void const searchByType(string carType)
+    {
+        Node* walker = head;
+        
+        cout << left
+                 << setw(5)  << "ID"
+                 << setw(12) << "CarType"
+                 << setw(12) << "Brand"
+                 << setw(12) << "Model"
+                 << setw(8)  << "Year"
+                 << setw(12) << "Status" << endl;
+        cout << "---------------------------------------------------------------" << endl;
+        
+        while(walker != nullptr)
+        {
+            if(walker->carType == carType)
+            {
+                cout << left
+                     << setw(5)  << walker->carIndex
+                     << setw(12) << walker->carType
+                     << setw(12) << walker->Brand
+                     << setw(12) << walker->Model
+                     << setw(8)  << walker->Year
+                     << setw(12) << walker->Status
+                     << endl;
+            }
+            walker = walker -> next;
+        }
+    }
+    
+    void const searchByBrand(string carBrand)
+    {
+        Node *walker = head;
+        cout << left
+                 << setw(5)  << "ID"
+                 << setw(12) << "CarType"
+                 << setw(12) << "Brand"
+                 << setw(12) << "Model"
+                 << setw(8)  << "Year"
+                 << setw(12) << "Status" << endl;
+        cout << "---------------------------------------------------------------" << endl;
+        
+        while(walker != nullptr)
+        {
+            if(walker->Brand == carBrand)
+            {
+                cout << left
+                     << setw(5)  << walker->carIndex
+                     << setw(12) << walker->carType
+                     << setw(12) << walker->Brand
+                     << setw(12) << walker->Model
+                     << setw(8)  << walker->Year
+                     << setw(12) << walker->Status
+                     << endl;
+            }
+            walker = walker -> next;
+        }
+    }
+    
+    void const searchByStatus(string carStatus)
+    {
+        Node *walker = head;
+        
+        cout << left
+                 << setw(5)  << "ID"
+                 << setw(12) << "CarType"
+                 << setw(12) << "Brand"
+                 << setw(12) << "Model"
+                 << setw(8)  << "Year"
+                 << setw(12) << "Status" << endl;
+        cout << "---------------------------------------------------------------" << endl;
+        
+        while(walker != nullptr)
+        {
+            if(walker->Status == carStatus)
+            {
+                cout << left
+                     << setw(5)  << walker->carIndex
+                     << setw(12) << walker->carType
+                     << setw(12) << walker->Brand
+                     << setw(12) << walker->Model
+                     << setw(8)  << walker->Year
+                     << setw(12) << walker->Status
+                     << endl;
+            }
+            walker = walker -> next;
+        }
+    }
 
 
 };
@@ -243,12 +337,43 @@ public:
                 carWalker -> Status = "Rented";
 
                 walker->rentedCars.push_back(carWalker);
+                
+                string today = getCurrentDate();
+                walker->customerBookingHistory.push_back(today);
                 cout<<"The car is rented!"<<endl;
                 return;
             }
             carWalker = carWalker->next;
         }
         cerr << "Car could not be found or is it is already rented!" << endl;
+    }
+    
+    string getCurrentDate() {
+        // Şu anki zaman bilgisini alıyoruz
+        time_t now = time(0);
+        
+        // Yerel zamana çeviriyoruz
+        struct tm *localTime = localtime(&now);
+        
+        // Gün, ay ve yıl değerlerini alıyoruz
+        int day = localTime->tm_mday;
+        int month = localTime->tm_mon + 1; // Aylar 0-11 arası olduğu için +1
+        int year = localTime->tm_year + 1900; // Yıl 1900'dan başladığı için +1900
+        
+        // String'e çeviriyoruz
+        std::ostringstream oss;
+        oss << year << "-";
+        
+        // Ay ve günü iki haneli yazmak için kontrol ediyoruz
+        if (month < 10)
+            oss << "0";
+        oss << month << "-";
+        
+        if (day < 10)
+            oss << "0";
+        oss << day;
+        
+        return oss.str();
     }
 
     void const printRentedCars(int customerID) {
@@ -275,13 +400,13 @@ public:
                 else {
                     for (int i=0;i<walker->rentedCars.size();i++) {
                         Node *cars = walker->rentedCars[i];
-                        string carInfo = to_string(cars->carIndex) + " - " + cars->carType + " - " + cars->Brand + " - " + cars->Model +   " - " + to_string(cars->Year);
+                        string carInfo = to_string(cars->carIndex) + " | " + cars->carType + " | " + cars->Brand + " | " + cars->Model +   " | " + to_string(cars->Year);
                         
                         cout << left
                         << setw(5)  << walker->customerId
                         << setw(15) << walker->customerName
                         << setw(15) << walker->customerSurname
-                        << setw(25) << "-"
+                        << setw(25) << walker->customerBookingHistory[i]
                         << setw(25) << carInfo
                         << endl;
                     }
@@ -333,7 +458,74 @@ int main() {
         cin>>kullaniciGiris;
 
         if (kullaniciGiris == 1) {
-            Cars.print();
+            int carSearch;
+            cout<<"---- CAR MENU ----\n"
+              "1) Display all inventory\n"
+              "2) Search by Car Type\n"
+              "3) Search by Brand\n"
+              "4) Search by Status\n"
+              "5) Exit\n\n\n"
+              "Enter the number of selection in menu: "<<endl;
+            cin>>carSearch;
+            if(carSearch == 1)
+            {
+                Cars.print();
+            }
+            else if(carSearch == 2)
+            {
+                string carType;
+                cout<<"---- CAR MENU ----\n"
+                "- Economy \n"
+                "- Compact \n"
+                "- Midsize \n"
+                "- FullSize \n"
+                "- SUV \n"
+                "- Crossover \n"
+                "- Luxury \n"
+                "- Convertible \n"
+                "- Van \n"
+                "- Truck \n"
+                "- Electric \n"
+                "- Hybrid \n"<<endl;
+                
+                cout<<"Enter car type that you want to rent: ";
+                cin>>carType;
+                cout<<endl;
+                Cars.searchByType(carType);
+            }
+            if(carSearch == 3)
+            {
+                string carBrand;
+                
+                cout<<"---- CAR MENU ----\n"
+                "- Toyota \n"
+                "- Ford \n"
+                "- Honda \n"
+                "- Chevrolet \n"
+                "- Mazda \n"
+                "- Chrysler \n"
+                "- Nissan \n"
+                "- BMW \n"
+                "- Mercedes-Benz \n"
+                "- Tesla \n"<<endl;
+                cout<<"Enter car brand that you want to rent: ";
+                cin>>carBrand;
+                cout<<endl;
+                Cars.searchByBrand(carBrand);
+            }
+            if(carSearch == 4)
+            {
+                string carStatus;
+                
+                cout<<"---- CAR MENU ----\n"
+                "- Avaible \n"
+                "- Rented \n"<<endl;
+                
+                cout<<"Enter car status that you want to rent: ";
+                cin>>carStatus;
+                cout<<endl;
+                Cars.searchByStatus(carStatus);
+            }
         }
         
         if (kullaniciGiris == 2)
@@ -364,7 +556,12 @@ int main() {
         }
         
         if (kullaniciGiris == 4) {
-            customerList.printCustomers();
+            int kullaniciID;
+            cout<<"Enter customer ID: ";
+            cin>>kullaniciID;
+            cout<<endl;
+
+            customerList.printRentedCars(kullaniciID);
         }
         
         if(kullaniciGiris == 5)
@@ -395,12 +592,7 @@ int main() {
 
         if(kullaniciGiris == 6)
         {
-            int kullaniciID;
-            cout<<"Enter customer ID: ";
-            cin>>kullaniciID;
-            cout<<endl;
-
-            customerList.printRentedCars(kullaniciID);
+            customerList.printCustomers();
         }
     }
 
