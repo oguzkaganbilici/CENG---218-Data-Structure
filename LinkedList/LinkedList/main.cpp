@@ -274,6 +274,28 @@ public:
         }
         
     }
+	bool isClone(LinkedList &LList)
+	{
+	    Node *walker1 = head;
+	    Node *walker2 = LList.head;
+	    if(walker1 == nullptr || walker2 == nullptr)
+	        return false;
+	        
+	    while(walker1 != nullptr && walker2 != nullptr)
+	    {
+	        if(walker1 -> name != walker2 -> name)
+	        {
+	            return false;
+	        }
+	        
+	        walker1 = walker1 -> next;
+	        walker2 = walker2 -> next;
+	    }
+	    
+	    
+	    return true;
+	}
+
 };
 
 int main(int argc, const char * argv[]) {
