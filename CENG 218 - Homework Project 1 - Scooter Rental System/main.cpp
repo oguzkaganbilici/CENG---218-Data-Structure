@@ -136,6 +136,25 @@ int main() {
 
             printMenu();
         }
+        if (kullaniciGiris == 10) {
+            int kullaniciID;
+            std::string name_surname, telephone, email, address;
+
+            cout<<"Enter the customer ID that you want to update: ";
+            cin>> kullaniciID;
+            cout<<"\nEnter the new name and surname: ";
+            getline(cin>>ws, name_surname);
+            cout<<"\nEnter the new telephone: ";
+            getline(cin, telephone);
+            cout<<"\nEnter the new e-mail: ";
+            getline(cin, email);
+            cout<<"\nEnter the new address: ";
+            getline(cin, address);
+
+            newSystem.updateCustomer(kullaniciID,name_surname, telephone, email, address);
+
+            newSystem.displayCustomerInformation();
+        }
     }
     return 0;
 }
