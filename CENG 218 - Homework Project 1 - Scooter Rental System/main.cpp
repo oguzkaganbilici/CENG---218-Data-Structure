@@ -1,7 +1,4 @@
 #include <iostream>
-#include "CustomerList.h"
-#include "ScooterList.h"
-
 #include "ScooterRentalSystem.h"
 
 #include <ctime>
@@ -9,26 +6,27 @@
 #include <chrono>
 #include <iomanip>
 
+
 using namespace std;
 
 void printMenu() {
     cout << endl;
-    cout << "╔══════════════════════════════════════════════╗" << endl;
-    cout << "║               Menu System                    ║" << endl;
-    cout << "╠══════════════════════════════════════════════╣" << endl;
-    cout << "║ 1. List Available Scooters                   ║" << endl;
-    cout << "║ 2. Rent a Scooter                            ║" << endl;
-    cout << "║ 3. Return a Scooter                          ║" << endl;
-    cout << "║ 4. View Customer Rental History              ║" << endl;
-    cout << "║ 5. Register a New Scooter                    ║" << endl;
-    cout << "║ 6. Delete a Scooter                          ║" << endl;
-    cout << "║ 7. Update a Scooter                          ║" << endl;
-    cout << "║ 8. Register a New Customer                   ║" << endl;
-    cout << "║ 9. Delete a Customer                         ║" << endl;
-    cout << "║ 10. Update a Customer                        ║" << endl;
-    cout << "╠══════════════════════════════════════════════╣" << endl;
-    cout << "║ 11. Exit                                     ║" << endl;
-    cout << "╚══════════════════════════════════════════════╝" << endl;
+    cout << "+--------------------------------------------+" << endl;
+    cout << "|              MENU SYSTEM                   |" << endl;
+    cout << "+--------------------------------------------+" << endl;
+    cout << "|  1. List Available Scooters                |" << endl;
+    cout << "|  2. Rent a Scooter                         |" << endl;
+    cout << "|  3. Return a Scooter                       |" << endl;
+    cout << "|  4. View Customer Rental History           |" << endl;
+    cout << "|  5. Register a New Scooter                 |" << endl;
+    cout << "|  6. Delete a Scooter                       |" << endl;
+    cout << "|  7. Update a Scooter                       |" << endl;
+    cout << "|  8. Register a New Customer                |" << endl;
+    cout << "|  9. Delete a Customer                      |" << endl;
+    cout << "| 10. Update a Customer                      |" << endl;
+    cout << "+--------------------------------------------+" << endl;
+    cout << "| 11. Exit                                   |" << endl;
+    cout << "+--------------------------------------------+" << endl;
     cout << endl;
 }
 
@@ -50,13 +48,7 @@ string getCurrentDateTime() {
 }
 
 int main() {
-/*
-    CustomerList *newCustomerList = new CustomerList();
-    newCustomerList->uploadCustomerFile();
 
-    ScooterList *newScooterList = new ScooterList();
-    newScooterList -> uploadScooterFile("scooters.txt");
-*/
     ScooterRentalSystem newSystem;
     newSystem.uploadScooterTxt();
     newSystem.uploadCustomerTxt();
@@ -67,12 +59,32 @@ int main() {
     int kullaniciGiris = 0;
     while (kullaniciGiris != 11)
     {
-        system("clear");
+        //system("clear");
         cout<<"Enter your selection: ";
         cin>>kullaniciGiris;
 
         if (kullaniciGiris == 1) {
             newSystem.listAvailableScooters();
+        }
+        if (kullaniciGiris == 2) {
+            int kullaniciID, scooterID;
+            cout<<"Enter customer ID: ";
+            cin>>kullaniciID;
+            cout<<"\nEnter scooter ID: ";
+            cin>>scooterID;
+            newSystem.rentScooter(scooterID, kullaniciID);
+        }
+        if (kullaniciGiris == 3) {
+            int scooterID;
+            cout<<"\nEnter scooter ID: ";
+            cin>>scooterID;
+            newSystem.returnScooter(scooterID);
+        }
+        if (kullaniciGiris == 4) {
+            int kullaniciID;
+            cout<<"Enter customer ID: ";
+            cin>>kullaniciID;
+            newSystem.viewCustomerHistory(kullaniciID);
         }
         if (kullaniciGiris == 5) {
             string location;

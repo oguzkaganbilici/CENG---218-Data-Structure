@@ -1,8 +1,8 @@
-# Install script for directory: /Users/oguzkaganbilici/Desktop/Data Structures/CENG 218 - Homework Project 1 - Scooter Rental System
+# Install script for directory: C:/Users/oguz.bilici/Desktop/oguzkaganbilici CENG---218-Data-Structure main CENG 218 - Homework Project 1 - Scooter Rental System
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/usr/local")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/CENG_218___Homework_Project_1___Scooter_Rental_System")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -34,7 +34,7 @@ endif()
 
 # Set path to fallback-tool for dependency-resolution.
 if(NOT DEFINED CMAKE_OBJDUMP)
-  set(CMAKE_OBJDUMP "/Library/Developer/CommandLineTools/usr/bin/objdump")
+  set(CMAKE_OBJDUMP "C:/Users/oguz.bilici/AppData/Local/JetBrains/CLion 2024.3.3/bin/mingw/bin/objdump.exe")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -52,6 +52,6 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-  file(WRITE "/Users/oguzkaganbilici/Desktop/Data Structures/CENG 218 - Homework Project 1 - Scooter Rental System/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+  file(WRITE "C:/Users/oguz.bilici/Desktop/oguzkaganbilici CENG---218-Data-Structure main CENG 218 - Homework Project 1 - Scooter Rental System/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

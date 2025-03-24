@@ -8,12 +8,14 @@
 #include<iostream>
 #include "Customers.h"
 #include "Scooter.h"
-
+#include "Rental.h"
 
 class ScooterRentalSystem {
 private:
     Customers *customerHead;
     Scooter *scooterHead;
+
+    Rental *rentalHead;
 
     int customerCounter, totalCustomerCounter;
     int scooterCounter, totalScooterCounter;
@@ -42,6 +44,9 @@ address); //Updates customer details.
 
     void viewCustomerHistory(int customerId); //Displays a customer’s rental history.
 
+    Customers *findCustomers(int customerID);
+    Scooter *findScooter(int scooterID);
+    string getCurrentDateTime();
 };
 
 

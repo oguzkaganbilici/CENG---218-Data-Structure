@@ -5,10 +5,12 @@
 #include "ScooterRentalSystem.h"
 #include<iostream>
 #include<iomanip> // verileri daha düzenli göstermek için
-#include<iostream>
+
 #include<fstream>
 #include<sstream>
-
+#include <ctime>
+#include <chrono>
+#include <string.h>
 
 void ScooterRentalSystem::addScooter(const Scooter& scooter) {
     Scooter *newScooter = new Scooter(scooter);
@@ -62,6 +64,78 @@ void ScooterRentalSystem::listAvailableScooters() const{
         cout<<"No available scooters at the moment." << endl;
     }
 }
+
+void ScooterRentalSystem::rentScooter(int scooterId, int customerId) {
+    Scooter *scooterWalker = findScooter(scooterId);
+    Customers *customersWalker = findCustomers(customerId);
+
+    if (!customersWalker) {
+        cout<<"Customer cannot be found !"<<endl;
+        return;
+    }
+    if (!scooterWalker) {
+        cout<<"Scooter cannot be found!"<<endl;
+        return;
+    }
+    if (scooterWalker -> status == 1) {
+        cout<<"The scooter is already rented!"<<endl;
+        return;
+    }
+
+    scooterWalker -> status = 1;
+    scooterWalker -> last_usage_date = getCurrentDateTime();
+    cout<<"The scooter is rented successfully"<<endl;
+
+    Rental *newRental = new Rental(scooterId, customerId, getCurrentDateTime());
+    Rental *rentalWalker = newRental;
+    if (rentalHead == nullptr) {
+        rentalHead = newRental;
+    }
+    else {
+        while (rentalWalker != nullptr) {
+            if (rentalWalker -> next == nullptr) {
+                rentalWalker -> next = newRental;
+                cout << "Scooter " << scooterId << " has been rented to customer " << customerId << "." << endl;
+
+                return;
+            }
+            rentalWalker = rentalWalker -> next;
+        }
+    }
+}
+void ScooterRentalSystem::returnScooter(int scooterId) {
+    Scooter *scooterWalker = findScooter(scooterId);
+
+    if (!scooterWalker) {
+        cout<<"Scooter cannot be found !"<<endl;
+        return;
+    }
+    if (scooterWalker -> status == 0) {
+        cout<<"The scooter was NOT rented"<<endl;
+        return;
+    }
+    scooterWalker -> status = 0;
+    scooterWalker->last_usage_date = getCurrentDateTime();
+
+    Rental *rentalWalker = rentalHead;
+    Rental *lastRental = nullptr;
+
+    while (rentalWalker != nullptr) {
+        if (rentalWalker -> scooterID == scooterId && rentalWalker->returnDate == "Not returned") {
+            lastRental = rentalWalker;
+        }
+        rentalWalker = rentalWalker -> next;
+    }
+
+    if (lastRental) {
+        lastRental -> returnDate = getCurrentDateTime();
+        cout<<"The scooter is returned successfully!"<<endl;
+    }
+    else {
+        cout << "Error: No active rental found for this scooter!" << endl;
+    }
+}
+
 void ScooterRentalSystem::uploadScooterTxt(const string& filename){
     ifstream scooterList(filename);
     if (!scooterList.is_open()) {
@@ -111,7 +185,7 @@ void ScooterRentalSystem::deleteScooter(int scooterId) {
             prev -> next = walker -> next;
             delete walker;
             totalScooterCounter--;
-            cout<<"Scooter "<<index<<" has been deleted from the system."<<endl;
+            cout<<"Scooter "<<scooterId<<" has been deleted from the system."<<endl;
             return;
         }
         else {
@@ -295,4 +369,86 @@ void ScooterRentalSystem::displayCustomerInformation() const {
     }
 
     cout<<"Total customer number: "<<totalCustomerCounter<<endl;
+}
+
+void ScooterRentalSystem::viewCustomerHistory(int customerId) {
+    Customers *customersWalker = findCustomers(customerId);
+
+    if (!customersWalker) {
+        cout << "The customer cannot be found!" << endl;
+        return;
+    }
+
+    cout << "Customer " << customerId << "'s Rental History:" << endl;
+    bool foundHistory = false;
+
+    Rental *rentalWalker = rentalHead;
+
+    while (rentalWalker != nullptr) {
+        if (rentalWalker->customerID == customerId) {
+            int ScooterId = rentalWalker->scooterID;
+            Scooter *ScooterWalker = findScooter(ScooterId);
+
+            if (ScooterWalker) {
+                string returnDate = (rentalWalker->returnDate.empty()) ? "Not Returned" : rentalWalker->returnDate;
+
+                cout << "- Scooter " << ScooterId << ", Location: " << ScooterWalker->location
+                     << ", Status: " << ((ScooterWalker->status == 0) ? "Available" : "Rented")
+                     << ", Battery Level: " << ScooterWalker->battery_level
+                     << ", Distance: " << ScooterWalker->distance << " km"
+                     << ", Rental Date: " << rentalWalker->rentDate
+                     << ", Return Date: " << returnDate << endl;
+
+                foundHistory = true;
+            } else {
+                cout << "- Scooter " << ScooterId << " (No longer exists in the system)" << endl;
+            }
+        }
+        rentalWalker = rentalWalker->next;
+    }
+
+    if (!foundHistory) {
+        cout << "No rental history found for customer " << customerId << "." << endl;
+    }
+}
+
+
+
+Customers* ScooterRentalSystem::findCustomers(int customerID) {
+    Customers *walker = customerHead;
+    while (walker != nullptr) {
+        if (walker -> customerID == customerID) {
+            return walker;
+        }
+        walker = walker -> next;
+    }
+    return nullptr;
+}
+
+Scooter* ScooterRentalSystem::findScooter(int scooterID) {
+    Scooter *walker = scooterHead;
+
+    while (walker != nullptr) {
+        if (walker -> id == scooterID) {
+            return walker;
+        }
+        walker = walker -> next;
+    }
+    return nullptr;
+}
+string ScooterRentalSystem::getCurrentDateTime() {
+    // Şu anki zaman bilgisini alıyoruz
+    auto now = chrono::system_clock::now();
+
+    // time_t formatına dönüştürüyoruz
+    time_t now_time_t = chrono::system_clock::to_time_t(now);
+
+    // Yerel zaman dilimine göre çözüyoruz
+    tm local_tm = *localtime(&now_time_t);
+
+    // String stream ile yazdırıyoruz
+    stringstream ss;
+    ss << put_time(&local_tm, "%Y-%m-%d %H:%M");
+
+    return ss.str();
 }
