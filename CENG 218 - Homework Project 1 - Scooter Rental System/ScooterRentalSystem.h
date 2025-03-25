@@ -21,7 +21,7 @@ private:
     int scooterCounter, totalScooterCounter;
 
 public:
-    ScooterRentalSystem(): customerHead(nullptr),scooterHead(nullptr), customerCounter(1), totalCustomerCounter(0), scooterCounter(1), totalScooterCounter(0) {};
+    ScooterRentalSystem(): customerHead(nullptr),scooterHead(nullptr),rentalHead(nullptr), customerCounter(1), totalCustomerCounter(0), scooterCounter(1), totalScooterCounter(0) {};
 
     void addScooter(const Scooter& scooter); //Adds a new scooter to the system.
     void addScooter(const std::string &loc, int stats, int battery, int distance, const std::string &date);

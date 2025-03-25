@@ -9,7 +9,15 @@
 
 using namespace std;
 
+void clearConsole() {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
 void printMenu() {
+    clearConsole();
     cout << endl;
     cout << "+--------------------------------------------+" << endl;
     cout << "|              MENU SYSTEM                   |" << endl;
@@ -53,13 +61,10 @@ int main() {
     newSystem.uploadScooterTxt();
     newSystem.uploadCustomerTxt();
 
-    printMenu();
-
-
     int kullaniciGiris = 0;
     while (kullaniciGiris != 11)
     {
-        //system("clear");
+        printMenu();
         cout<<"Enter your selection: ";
         cin>>kullaniciGiris;
 

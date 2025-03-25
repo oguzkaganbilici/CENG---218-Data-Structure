@@ -87,7 +87,8 @@ void ScooterRentalSystem::rentScooter(int scooterId, int customerId) {
     cout<<"The scooter is rented successfully"<<endl;
 
     Rental *newRental = new Rental(scooterId, customerId, getCurrentDateTime());
-    Rental *rentalWalker = newRental;
+    Rental *rentalWalker = rentalHead;
+
     if (rentalHead == nullptr) {
         rentalHead = newRental;
     }
@@ -96,7 +97,6 @@ void ScooterRentalSystem::rentScooter(int scooterId, int customerId) {
             if (rentalWalker -> next == nullptr) {
                 rentalWalker -> next = newRental;
                 cout << "Scooter " << scooterId << " has been rented to customer " << customerId << "." << endl;
-
                 return;
             }
             rentalWalker = rentalWalker -> next;
@@ -209,14 +209,11 @@ void ScooterRentalSystem::updateScooter(int scooterId, string location, int batt
             walker -> battery_level = battery_level;
             walker -> distance = distance;
             cout<<"Scooter "<<walker->id<<"'s details have been updated successfully"<<endl;
-            break;
+            return;
         }
-        else {
-            cout<< "The scooter is not found.. Try again!"<<endl;
-        }
-
         walker = walker -> next;
     }
+    cout<< "The scooter is not found.. Try again!"<<endl;
 }
 
 void ScooterRentalSystem::registerCustomer(const Customers& customer) {
@@ -372,8 +369,8 @@ void ScooterRentalSystem::displayCustomerInformation() const {
 }
 
 void ScooterRentalSystem::viewCustomerHistory(int customerId) {
-    Customers *customersWalker = findCustomers(customerId);
 
+    Customers *customersWalker = findCustomers(customerId);
     if (!customersWalker) {
         cout << "The customer cannot be found!" << endl;
         return;
@@ -386,6 +383,7 @@ void ScooterRentalSystem::viewCustomerHistory(int customerId) {
 
     while (rentalWalker != nullptr) {
         if (rentalWalker->customerID == customerId) {
+
             int ScooterId = rentalWalker->scooterID;
             Scooter *ScooterWalker = findScooter(ScooterId);
 
@@ -400,7 +398,8 @@ void ScooterRentalSystem::viewCustomerHistory(int customerId) {
                      << ", Return Date: " << returnDate << endl;
 
                 foundHistory = true;
-            } else {
+            }
+            else {
                 cout << "- Scooter " << ScooterId << " (No longer exists in the system)" << endl;
             }
         }
