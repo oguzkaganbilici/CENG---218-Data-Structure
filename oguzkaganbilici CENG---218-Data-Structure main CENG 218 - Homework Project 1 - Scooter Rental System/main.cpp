@@ -62,8 +62,6 @@ int main() {
     newSystem.uploadCustomerTxt();
     clearConsole();
 
-    printMenu();
-
     int kullaniciGiris = 0;
     while (kullaniciGiris != 11)
     {
