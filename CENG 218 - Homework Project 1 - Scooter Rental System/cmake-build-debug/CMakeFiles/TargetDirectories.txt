@@ -1,3 +1,0 @@
-/Users/oguzkaganbilici/Desktop/Data Structures/CENG 218 - Homework Project 1 - Scooter Rental System/cmake-build-debug/CMakeFiles/CENG_218___Homework_Project_1___Scooter_Rental_System.dir
-/Users/oguzkaganbilici/Desktop/Data Structures/CENG 218 - Homework Project 1 - Scooter Rental System/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/oguzkaganbilici/Desktop/Data Structures/CENG 218 - Homework Project 1 - Scooter Rental System/cmake-build-debug/CMakeFiles/rebuild_cache.dir
