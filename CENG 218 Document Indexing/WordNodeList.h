@@ -1,5 +1,5 @@
 //
-// Created by Oğuz Kağan Bilici on 13.04.2025.
+// Created by oguz.bilici on 14.04.2025.
 //
 
 #ifndef WORDNODELIST_H
@@ -7,10 +7,16 @@
 
 #include "WordNode.h"
 
-class WordNodeList {
-    WordNode *head;
 
+class WordNodeList {
+private:
+    WordNode *head;
+public:
     WordNodeList();
+    void addNewWord(string w, int fileID);
+    void deleteIndex(string w, int fileID);
+    void printWordList() const;
+    void searchWord(string w) const;
 };
 
 

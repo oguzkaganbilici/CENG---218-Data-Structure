@@ -1,11 +1,11 @@
 //
-// Created by Oğuz Kağan Bilici on 13.04.2025.
+// Created by oguz.bilici on 14.04.2025.
 //
 
 #ifndef INDEXNODE_H
 #define INDEXNODE_H
 
-#include<iostream>
+
 
 class IndexNode {
 public:
