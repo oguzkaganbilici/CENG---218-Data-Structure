@@ -34,18 +34,6 @@ void WordNodeList::addNewWord(string w, int fileID) {
 
 }
 
-void WordNodeList::deleteIndex(string w, int fileID) {
-    WordNode *walker(head), *ptr(nullptr);
-
-    if (head == nullptr) {
-        cout<<"There is no index"<<endl;
-        return;
-    }
-    if (head->word == w) {
-
-    }
-}
-
 void WordNodeList::printWordList() const {
     WordNode *walker = head;
 
@@ -71,4 +59,42 @@ void WordNodeList::searchWord(string w) const {
         walker = walker->next;
     }
     cout<<endl;
+}
+
+void WordNodeList::searchMostFrequent() const {
+    vector<pair<string, int>> wordFreq;
+    WordNode *walker(head);
+
+    while (walker != nullptr) {
+        wordFreq.push_back({walker->word, walker->wordList.getIndexCount()});
+        walker = walker->next;
+    }
+
+    sort(wordFreq.begin(), wordFreq.end(), [](const auto& a, const auto& b) {
+        return a.second > b.second;
+    });
+
+    cout << "Top 10 most frequent words:\n";
+    for (int i=0;i<10;i++) {
+        cout<<i+1<<". "<<wordFreq[i].first << " -> "<<wordFreq[i].second<<endl;
+    }
+}
+
+void WordNodeList::searchLeastFrequent() const {
+    vector<pair<string, int>> leastFreq;
+    WordNode *walker(head);
+
+    while (walker != nullptr) {
+        leastFreq.push_back({walker->word, walker->wordList.getIndexCount()});
+        walker = walker->next;
+    }
+
+    sort(leastFreq.begin(), leastFreq.end(), [](const auto &a, const auto &b) {
+        return a.second < b.second;
+    });
+
+    cout << "Top 10 least frequent words:\n";
+    for (int i=0;i<10;i++) {
+        cout<<i+1<<". "<<leastFreq[i].first << " -> "<<leastFreq[i].second<<endl;
+    }
 }

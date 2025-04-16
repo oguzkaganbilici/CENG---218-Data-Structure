@@ -17,6 +17,8 @@ public:
     void deleteIndex(string w, int fileID);
     void printWordList() const;
     void searchWord(string w) const;
+    void searchMostFrequent() const;
+    void searchLeastFrequent() const;
 };
 
 

@@ -17,6 +17,7 @@ public:
     void addNewIndex(int i);
     void deleteIndex(int i);
     void printIndexList() const;
+    int getIndexCount() const;
 };
 
 

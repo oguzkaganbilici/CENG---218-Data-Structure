@@ -61,3 +61,15 @@ void IndexNodeList::printIndexList() const {
     }
     cout<<endl;
 }
+
+int IndexNodeList::getIndexCount() const {
+    int totalIndex = 0;
+    IndexNode *walker(head);
+
+    while (walker != nullptr) {
+        totalIndex += 1;
+        walker = walker->next;
+    }
+
+    return totalIndex;
+}
