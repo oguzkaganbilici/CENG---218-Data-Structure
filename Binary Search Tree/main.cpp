@@ -82,6 +82,20 @@ private:
         cout<<r->key<< " -> ";
     }
 
+    bool isMemberRecursive(int x, BTNode *r) {
+        if (r == nullptr) return false;
+        if (r -> key == x) return true;
+        if (r->key < x) isMemberRecursive(x, r->rightChild);
+        if (r->key > x) isMemberRecursive(x, r->leftChild);
+    }
+
+    int toplam(BTNode *r) {
+        if (r == nullptr ) return 0;
+        int sum = r->key;
+        sum += toplam(r->leftChild);
+        sum += toplam(r->rightChild);
+        return sum;
+    }
 public:
     BT(): root(nullptr) {};
 
@@ -113,6 +127,27 @@ public:
     void postOrderTraversal() {
         postOrderTraversal(root);
     }
+    bool isMember(int x) {
+        BTNode *walker = root;
+
+        while (walker != nullptr) {
+            if (walker -> key == x) return true;
+            if (walker -> key < x) walker = walker -> rightChild;
+            else {
+                walker = walker -> leftChild;
+            }
+        }
+        return false;
+    }
+    bool isMemberRecursive(int x) {
+        return isMemberRecursive(x, root);
+    }
+
+    int toplam() {
+        return toplam(root);
+    }
+
+
 };
 
 int main() {
@@ -138,4 +173,10 @@ int main() {
     newTree.preOrderTraversal();
     cout<<endl<<"Post-Order Traversal: ";
     newTree.postOrderTraversal();
+
+    cout<<endl<<"is member? : "  << newTree.isMember(11);
+    cout<<endl<<"is member? recursive: "<< newTree.isMember(2);
+
+
+    cout<<endl<<"toplam: "<<newTree.totalSum();
 }
