@@ -35,7 +35,42 @@ private:
         delete root;
         return nullptr;
     }
-
+    BTNode *findInOrderPre(BTNode *r) {
+        if (r == nullptr) return nullptr;
+        while (r->rightChild != nullptr) {
+            r = r->rightChild;
+        }
+        return r;
+    }
+    BTNode *deleteNode(int x, BTNode *r) {
+        if (r == nullptr) return nullptr;
+        if (r->key < x) return deleteNode(x, r->rightChild);
+        else if (r->key > x) {
+            return deleteNode(x, r->leftChild);
+        }
+        else {
+            if (!r->leftChild && !r->rightChild) {
+                delete r;
+                return nullptr;
+            }
+            else if (!r->rightChild) {
+                BTNode *temp = r->leftChild;
+                delete r;
+                return temp;
+            }
+            else if (!r->leftChild) {
+                BTNode *temp = r->rightChild;
+                delete r;
+                return temp;
+            }
+            else {
+                BTNode *minNode = findInOrderPre(r->leftChild);
+                r->key = minNode->key;
+                r->leftChild = deleteNode(minNode->key, r->leftChild);
+            }
+        }
+        return r;
+    }
     int height(BTNode *root) {
         if (root == nullptr) return 0;
 
@@ -49,26 +84,22 @@ private:
         if (root == nullptr) return 0;
         return root->key + totalSum(root->rightChild) + totalSum(root->leftChild);
     }
-
     int maxVal(BTNode *t) {
         if (t == nullptr) return -1;
         if (t->rightChild) return maxVal(t->rightChild);
         return t->key;
     }
-
     int minVal(BTNode *t) {
         if (t == nullptr) return -1;
         if (t->leftChild) return minVal(t->leftChild);
         return t->key;
     }
-
     void inOrderTraversal(BTNode *r) {
         if (r == nullptr) return;
         inOrderTraversal(r->leftChild);
         cout<<r->key<< " -> ";
         inOrderTraversal(r->rightChild);
     }
-
     void preOrderTraversal(BTNode *r) {
         if (r == nullptr) return;
         cout<<r->key<< " -> ";
@@ -81,14 +112,12 @@ private:
         postOrderTraversal(r->rightChild);
         cout<<r->key<< " -> ";
     }
-
     bool isMemberRecursive(int x, BTNode *r) {
         if (r == nullptr) return false;
         if (r -> key == x) return true;
-        if (r->key < x) isMemberRecursive(x, r->rightChild);
-        if (r->key > x) isMemberRecursive(x, r->leftChild);
+        if (r->key < x) return isMemberRecursive(x, r->rightChild);
+        if (r->key > x) return isMemberRecursive(x, r->leftChild);
     }
-
     int toplam(BTNode *r) {
         if (r == nullptr ) return 0;
         int sum = r->key;
@@ -105,13 +134,15 @@ public:
     void insert(int x) {
         insert(x, root);
     }
+    void deleteNode(int x) {
+        root = deleteNode(x, root);
+    }
     int height() {
         return height(root);
     }
     int totalSum() {
         return totalSum(root);
     }
-
     int maxVal() {
         return maxVal(root);
     }
@@ -166,6 +197,7 @@ int main() {
     cout<<"Max Val: "<<newTree.maxVal()<<endl;
     cout<<"Min Val: "<<newTree.minVal()<<endl;
 
+    newTree.deleteNode(6);
 
     cout<<"In-Order Traversal: ";
     newTree.inOrderTraversal();

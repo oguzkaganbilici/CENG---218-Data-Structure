@@ -11,6 +11,6 @@
 -- Check for working CXX compiler: /Library/Developer/CommandLineTools/usr/bin/c++ - skipped
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
--- Configuring done (0.8s)
--- Generating done (0.0s)
+-- Configuring done (1.0s)
+-- Generating done (0.1s)
 -- Build files have been written to: /Users/oguzkaganbilici/Desktop/Data Structures/Binary Search Tree/cmake-build-debug
