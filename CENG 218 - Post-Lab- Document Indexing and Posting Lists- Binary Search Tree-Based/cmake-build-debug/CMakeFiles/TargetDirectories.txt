@@ -1,0 +1,3 @@
+/Users/oguzkaganbilici/Desktop/Data Structures/CENG 218 - Post-Lab- Document Indexing and Posting Lists- Binary Search Tree-Based/cmake-build-debug/CMakeFiles/CENG_218___Post_Lab__Document_Indexing_and_Posting_Lists__Binary_Search_Tree_Based.dir
+/Users/oguzkaganbilici/Desktop/Data Structures/CENG 218 - Post-Lab- Document Indexing and Posting Lists- Binary Search Tree-Based/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/oguzkaganbilici/Desktop/Data Structures/CENG 218 - Post-Lab- Document Indexing and Posting Lists- Binary Search Tree-Based/cmake-build-debug/CMakeFiles/rebuild_cache.dir
