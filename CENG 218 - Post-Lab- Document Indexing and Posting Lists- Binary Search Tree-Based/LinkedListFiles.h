@@ -1,5 +1,5 @@
 //
-// Created by Oğuz Kağan Bilici on 18.05.2025.
+// Created by oguz.bilici on 19.05.2025.
 //
 
 #ifndef LINKEDLISTFILES_H
@@ -16,8 +16,11 @@ private:
 
 public:
     LinkedListFiles();
-    void insert(string fileName);
+    void insert(int fileName);
+    const void print();
+    const int getFileCount();
 };
+
 
 
 

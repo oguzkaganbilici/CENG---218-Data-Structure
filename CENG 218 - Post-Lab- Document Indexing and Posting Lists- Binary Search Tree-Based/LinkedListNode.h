@@ -1,5 +1,5 @@
 //
-// Created by Oğuz Kağan Bilici on 18.05.2025.
+// Created by oguz.bilici on 19.05.2025.
 //
 
 #include<iostream>
@@ -9,13 +9,13 @@ using namespace std;
 #define LINKEDLISTNODE_H
 
 
+
 class LinkedListNode {
 public:
-    string fileName;
+    int fileName;
     LinkedListNode *next;
 
-    LinkedListNode(string file): fileName(file), next(nullptr) {};
-
+    LinkedListNode(int file): fileName(file), next(nullptr) {};
 };
 
 
